@@ -3,807 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MTR-Yomi的实用拓展</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Bing 搜索</title>
     <style>
-        :root {
-            --primary: #004d40;
-            --primary-dark: #00251a;
-            --primary-light: #39796b;
-            --secondary: #00695c;
-            --secondary-light: #439889;
-            --accent: #00796b;
-            --accent-light: #48a999;
-            --text-primary: #263238;
-            --text-secondary: #546e7a;
-            --divider: #e0e0e0;
-            --background: #f5f7fa;
-            --surface: #ffffff;
-            --success: #2e7d32;
-            --warning: #f57c00;
-            --info: #0288d1;
-            --error: #d32f2f;
-        }
-        
+        /* 全局样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Microsoft YaHei', '微软雅黑', sans-serif;
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-        
+
         body {
-            background-color: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-            font-weight: 400;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
-        
-        /* Material Design 顶部应用栏 */
-        .app-bar {
-            background-color: rgba(0, 77, 64, 0.85);
-            color: white;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            padding: 16px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-        
-        .app-bar-content {
-            display: flex;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .app-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.5rem;
-            font-weight: 500;
-        }
-        
-        .app-title i {
-            font-size: 2rem;
-            color: var(--accent-light);
-        }
-        
-        .logo-text {
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-color: #fff;
+            color: #333;
         }
-        
-        .logo-subtitle {
-            font-size: 0.8rem;
-            font-weight: 300;
-            opacity: 0.8;
-        }
-        
-        .spacer {
-            flex-grow: 1;
-        }
-        
-        .nav-links {
+
+        /* 顶部导航栏 */
+        .header {
             display: flex;
-            gap: 24px;
+            justify-content: flex-end;
+            padding: 12px 24px;
+            font-size: 13px;
         }
-        
-        .nav-link {
-            color: rgba(255,255,255,0.9);
+
+        .header a {
+            color: #000;
             text-decoration: none;
-            font-weight: 400;
-            padding: 8px 16px;
-            border-radius: 4px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+            margin-left: 18px;
+            line-height: 24px;
         }
-        
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+
+        .header a:hover {
+            text-decoration: underline;
         }
-        
-        .nav-link:hover {
-            background-color: rgba(255,255,255,0.1);
-            transform: translateY(-2px);
+
+        .header .apps-icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            opacity: 0.6;
         }
-        
-        .nav-link:hover::before {
-            left: 100%;
+
+        .header .apps-icon:hover {
+            opacity: 1;
         }
-        
+
+        /* 主体内容区 */
         .main {
-            background: linear-gradient(rgba(0, 37, 26, 0.85), rgba(0, 37, 26, 0.9)), 
-                        url('https://gp3e.saobby.com/i/xlnUreQm81bkCQGf.png');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 100px 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .main::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(0, 105, 92, 0.2) 0%, rgba(0, 121, 107, 0.2) 100%);
-            z-index: 1;
-        }
-        
-        .main-content {
-            max-width: 900px;
-            margin: 0 auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             padding: 0 20px;
+        }
+
+        /* Bing 标志 */
+        .logo {
+            width: 100px;
+            margin-bottom: 28px;
+        }
+
+        /* 搜索框容器 */
+        .search-container {
+            width: 100%;
+            max-width: 580px;
             position: relative;
-            z-index: 2;
+            margin-bottom: 24px;
         }
-        
-        .main-title {
-            font-size: 3.5rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+
+        /* 搜索框样式 */
+        .search-box {
+            width: 100%;
+            height: 46px;
+            padding: 0 46px;
+            border: 1px solid #d0d0d0;
+            border-radius: 24px;
+            font-size: 16px;
+            outline: none;
         }
-        
-        .main-subtitle {
-            font-size: 1.5rem;
-            font-weight: 300;
-            margin-bottom: 40px;
-            opacity: 0.95;
+
+        .search-box:hover,
+        .search-box:focus {
+            box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+            border-color: rgba(223, 225, 229, 0);
         }
-        
-        .highlight {
-            color: var(--accent-light);
-            font-weight: 400;
+
+        /* 搜索图标 */
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #9aa0a6;
         }
-        
-        .btn-group {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        /* Material Design 按钮 - 适当圆角 */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 14px 28px;
-            font-size: 1.1rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            text-decoration: none;
-            border-radius: 4px;
+
+        /* 麦克风图标 */
+        .mic-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: #9aa0a6;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
         }
-        
-        .btn i {
-            margin-right: 10px;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 15px rgba(0, 121, 107, 0.4);
-        }
-        
-        .btn-primary:hover::before {
-            left: 100%;
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            color: white;
-            border: 2px solid rgba(255,255,255,0.7);
-        }
-        
-        .btn-outline:hover {
-            background-color: rgba(255,255,255,0.15);
-            border-color: white;
-            transform: translateY(-3px) scale(1.05);
-        }
-        
-        .btn-outline:hover::before {
-            left: 100%;
-        }
-        
-        /* Material Design 卡片 - 适当圆角 */
-        .section {
-            padding: 80px 0;
-        }
-        
-        .section-alt {
-            background-color: var(--divider);
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 500;
-            margin-bottom: 48px;
-            text-align: center;
-            color: var(--primary);
-            position: relative;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(to right, var(--primary-light), var(--secondary));
-            border-radius: 0;
-        }
-        
-        .section-subtitle {
-            font-size: 1.3rem;
-            font-weight: 300;
-            color: var(--text-secondary);
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 48px;
-        }
-        
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-        }
-        
-        .card {
-            background-color: var(--surface);
-            border-radius: 4px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-top: 3px solid var(--primary-light);
-            backdrop-filter: blur(5px);
-        }
-        
-        .card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        
-        .card-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 28px;
+
+        /* 搜索按钮组 */
+        .search-buttons {
             display: flex;
-            align-items: center;
-            gap: 20px;
+            gap: 12px;
+            margin-bottom: 24px;
         }
-        
-        .card-icon {
-            background-color: rgba(255,255,255,0.2);
-            width: 56px;
-            height: 56px;
+
+        .search-btn {
+            padding: 8px 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
             border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
+            font-size: 14px;
+            color: #3c4043;
+            cursor: pointer;
         }
-        
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 500;
+
+        .search-btn:hover {
+            border: 1px solid #dadce0;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
         }
-        
-        .card-content {
-            padding: 28px;
-        }
-        
-        .card-text {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.7;
-        }
-        
-        .feature-list {
-            list-style: none;
-            margin-top: 15px;
-        }
-        
-        .feature-list li {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--divider);
-            display: flex;
-            align-items: center;
-        }
-        
-        .feature-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .feature-list i {
-            color: var(--accent);
-            margin-right: 10px;
-        }
-        
-        /* 功能展示区域 - 适当圆角 */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .feature-item {
-            background-color: var(--surface);
-            border-radius: 4px;
-            padding: 25px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--info);
-            transition: transform 0.3s;
-            backdrop-filter: blur(5px);
-        }
-        
-        .feature-item:hover {
-            transform: translateY(-5px) scale(1.02);
-        }
-        
-        .feature-item.upcoming {
-            border-left-color: var(--warning);
-            opacity: 0.9;
-        }
-        
-        .feature-title {
-            font-weight: 500;
-            margin-bottom: 12px;
-            color: var(--primary);
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-left: auto;
-        }
-        
-        .badge-current {
-            background-color: var(--success);
-            color: white;
-        }
-        
-        .badge-upcoming {
-            background-color: var(--warning);
-            color: white;
-        }
-        
-        .badge-future {
-            background-color: var(--info);
-            color: white;
-        }
-        
-        /* 截图区域 - 适当圆角 */
-        .screenshot-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .screenshot-container {
-            border-radius: 4px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        
-        .screenshot-container:hover {
-            transform: translateY(-5px) scale(1.02);
-        }
-        
-        .screenshot {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-            background-color: #e0e7ff;
-        }
-        
-        .caption {
-            padding: 15px;
-            background-color: var(--surface);
-            font-weight: 400;
-            color: var(--text-primary);
-            text-align: center;
-        }
-        
-        /* 下载区域 - 适当圆角 */
-        .download-section {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            color: white;
-            padding: 80px 0;
-            text-align: center;
-        }
-        
-        .version-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            color: white;
-            padding: 8px 24px;
-            border-radius: 4px;
-            font-weight: 500;
-            margin: 20px 0;
-            font-size: 1.1rem;
-            box-shadow: 0 2px 8px rgba(0, 121, 107, 0.3);
-        }
-        
-        .qq-group {
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 4px;
-            padding: 25px;
-            max-width: 500px;
-            margin: 40px auto 0;
-            backdrop-filter: blur(10px);
-        }
-        
-        .qq-group h3 {
-            color: var(--accent-light);
-            margin-bottom: 15px;
-        }
-        
-        .qq-code {
-            font-size: 2.5rem;
-            font-weight: 500;
-            color: white;
-            background: rgba(0,0,0,0.2);
-            padding: 15px 30px;
-            border-radius: 4px;
-            display: inline-block;
-            margin: 15px 0;
-            letter-spacing: 2px;
-        }
-        
-        /* 页脚 */
+
+        /* 底部区域 */
         .footer {
-            background-color: var(--primary-dark);
-            padding: 50px 0;
-            text-align: center;
-            color: rgba(255,255,255,0.8);
+            background-color: #f2f2f2;
+            font-size: 14px;
         }
-        
-        .footer-content {
-            max-width: 800px;
-            margin: 0 auto;
+
+        .footer-top {
+            padding: 12px 24px;
+            border-bottom: 1px solid #dadce0;
+            color: #70757a;
         }
-        
+
+        .footer-bottom {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 12px 24px;
+        }
+
         .footer-links {
             display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 30px 0;
+            gap: 20px;
         }
-        
-        .footer-link {
-            color: rgba(255,255,255,0.8);
+
+        .footer-links a {
+            color: #70757a;
             text-decoration: none;
-            transition: color 0.3s;
-            font-weight: 300;
         }
-        
-        .footer-link:hover {
-            color: var(--accent-light);
+
+        .footer-links a:hover {
+            text-decoration: underline;
         }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .app-title {
-                font-size: 1.2rem;
+
+        /* 响应式适配 */
+        @media (max-width: 600px) {
+            .search-container {
+                max-width: 100%;
             }
             
-            .nav-links {
-                display: none;
-            }
-            
-            .main-title {
-                font-size: 2.5rem;
-            }
-            
-            .main-subtitle {
-                font-size: 1.2rem;
-            }
-            
-            .btn-group {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 300px;
+            .footer-bottom {
                 justify-content: center;
             }
             
-            .section {
-                padding: 60px 0;
-            }
-            
-            .section-title {
-                font-size: 2rem;
+            .footer-links {
+                margin-top: 8px;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <header class="app-bar">
-        <div class="app-bar-content">
-            <div class="app-title">
-                <i class="fas fa-subway"></i>
-                <div class="logo-text">
-                    <span>Yomi的MTR实用拓展</span>
-                    <span class="logo-subtitle">适用于MTR3</span>
-                </div>
-            </div>
-            <div class="spacer"></div>
-            <div class="nav-links">
-                <a href="#features" class="nav-link">目前内容</a>
-                <a href="#upcoming" class="nav-link">新内容</a>
-                <a href="#screenshots" class="nav-link">展示</a>
-                <a href="#download" class="nav-link">下载安装</a>
-            </div>
-        </div>
+    <!-- 顶部导航 -->
+    <header class="header">
+        <a href="#">图片</a>
+        <a href="#">视频</a>
+        <a href="#">地图</a>
+        <a href="#">更多</a>
+        <img src="https://img.icons8.com/ios-glyphs/24/000000/apps.png" alt="应用" class="apps-icon">
     </header>
-    
-    <section class="main">
-        <div class="main-content">
-            <h1 class="main-title">Yomi的MTR实用拓展</h1>
-            <p class="main-subtitle">🚇🚇 <span class="highlight"></span>全新附属模组，适用于MTR3</p>
-            <p class="main-subtitle">让MTR的电梯更加避震</p>
-            <div class="btn-group">
-                <a href="https://modrinth.com/mod/mtr-yum" class="btn btn-primary">
-                    <i class="material-icons">download</i>立即下载
-                </a>
-                <a href="https://github.com/yomi-china/MTR-Yomi-Utility-Mod" target="_blank" class="btn btn-outline">
-                    <i class="fab fa-github"></i>GitHub
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <section class="section" id="features">
-        <div class="container">
-            <h2 class="section-title">目前内容</h2>
-            <p class="section-subtitle">全面提升MTR模组电梯体验</p>
-            
-            <div class="card-container">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-elevator"></i>
-                        </div>
-                        <h3 class="card-title">配置电梯更便捷</h3>
-                    </div>
-                    <div class="card-content">
-                        <p class="card-text">MTR中，通常需要手动连接每个楼层的电梯组件并设置楼层，麻烦且效率低。本模组解决了这个问题。</p>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check-circle"></i> <strong>电梯自动设置器</strong> - 自动设置电梯轨道楼层编号，方便快捷。</li>
-                            <li><i class="fas fa-check-circle"></i> <strong>电梯部件自动连接器</strong> - 一键连接所有电梯按钮，到站灯，显示屏等。</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-volume-up"></i>
-                        </div>
-                        <h3 class="card-title">音效与显示系统</h3>
-                    </div>
-                    <div class="card-content">
-                        <p class="card-text">丰富的音效和显示选项，创造沉浸式铁路体验。</p>
-                        <ul class="feature-list">
-                            <li><i class="fas fa-check-circle"></i> <strong>电梯到站灯</strong> - 电梯抵达时闪烁提醒。</li>
-                            <li><i class="fas fa-check-circle"></i> <strong>电梯楼层显示屏</strong> - 美观的楼层显示，支持自定义颜色和样式，多种风格。</li>
-                            <li><i class="fas fa-check-circle"></i> <strong>三菱 GPM/S 风格电梯按钮</strong> - 包含箭头、按钮和数字显示，使用逼真的自定义字体。</li>
-                            <li><i class="fas fa-check-circle"></i> <strong>蒂森克虏伯经典风格电梯按钮</strong> - 包含箭头、按钮和数字显示，使用逼真的自定义字体。</li>
-                            <li><i class="fas fa-check-circle"></i> <strong>电梯到站提示音播放器</strong> - 内置了很多个逼真的提示音，刷右键可以选择并试听。</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="section section-alt" id="upcoming">
-        <div class="container">
-            <h2 class="section-title">新内容</h2>
-            <p class="section-subtitle">更多精彩功能正在火热开发中！</p>
-            
-            <div class="feature-grid">
-                <div class="feature-item upcoming">
-                    <h4 class="feature-title">
-                        <i class="fas fa-palette"></i> 更多外呼样式
-                        <span class="badge badge-upcoming">开发中</span>
-                    </h4>
-                    <p>基于现有外呼面板，新增通力、迅达、奥的斯等多种风格（贴图制作中～）。</p>
-                </div>
-                
-                <div class="feature-item upcoming">
-                    <h4 class="feature-title">
-                        <i class="fas fa-bolt"></i> 简易接触网方块
-                        <span class="badge badge-upcoming">开发中</span>
-                    </h4>
-                    <p>方块化设计，包含直线和弯曲线路两种形式，类似迷上城建模组的道路标线。</p>
-                </div>
-                
-                <div class="feature-item">
-                    <h4 class="feature-title">
-                        <i class="fas fa-tv"></i> 灵动 PIDS 显示屏
-                        <span class="badge badge-future">计划中</span>
-                    </h4>
-                    <p>显示更多信息、支持动画效果和页面切换。</p>
-                </div>
-                
-                <div class="feature-item">
-                    <h4 class="feature-title">
-                        <i class="fas fa-lightbulb"></i> 更多创意功能
-                        <span class="badge badge-future">构思中</span>
-                    </h4>
-                    <p>未来更多精彩功能等你来发现！欢迎加入QQ群提供建议！（群号在下面）</p>
-                </div>
-            </div>
+    <!-- 主体内容 -->
+    <main class="main">
+        <!-- Bing Logo -->
+        <img src="https://www.bing.com/th?id=OHR.BingLogo_EN-US7696243430_UHD.jpg&w=100" alt="Bing" class="logo">
+        
+        <!-- 搜索框区域 -->
+        <div class="search-container">
+            <svg class="search-icon" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <input type="text" class="search-box" placeholder="输入搜索内容...">
+            <svg class="mic-icon" viewBox="0 0 24 24">
+                <path d="M12 15c1.66 0 2.99-1.34 2.99-3L15 6c0-1.66-1.34-3-3-3S9 4.34 9 6v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 15 6.7 12H5c0 3.42 2.72 6.23 6 6.72V22h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+            </svg>
         </div>
-    </section>
 
-    <section class="section" id="screenshots">
-        <div class="container">
-            <h2 class="section-title">效果展示</h2>
-            <p class="section-subtitle">看看YUM模组如何改变您的MTR体验</p>
-            
-            <div class="screenshot-grid">
-                <div class="screenshot-container">
-                    <div class="screenshot" style="background: linear-gradient(135deg, #00695c, #48a999);"></div>
-                    <div class="caption">图片还没拍</div>
-                </div>
-                
-                <div class="screenshot-container">
-                    <div class="screenshot" style="background: linear-gradient(135deg, #004d40, #39796b);"></div>
-                    <div class="caption">图片还没拍</div>
-                </div>
-                
-                <div class="screenshot-container">
-                    <div class="screenshot" style="background: linear-gradient(135deg, #00796b, #439889);"></div>
-                    <div class="caption">图片还没拍</div>
-                </div>
-            </div>
+        <!-- 搜索按钮 -->
+        <div class="search-buttons">
+            <button class="search-btn" id="searchBtn">必应搜索</button>
+            <button class="search-btn" id="luckyBtn">运气不错</button>
         </div>
-    </section>
+    </main>
 
-    <section class="download-section" id="download">
-        <div class="container">
-            <h2 style="color: white; font-size: 2.5rem; margin-bottom: 20px; font-weight: 500;">立即体验</h2>
-            <p style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 20px; font-weight: 300;">也可以加入QQ群下载</p>
-            
-            <div class="version-badge">最新版本是1.2.2，CurseForge更新会比Modrinth慢</div>
-            
-            <div class="btn-group">
-                <a href="https://modrinth.com/mod/mtr-yum/versions" class="btn btn-primary" style="background: linear-gradient(135deg, var(--accent-light), var(--accent));">
-                    <i class="material-icons">download</i>Modrinth 下载
-                </a>
-                <a href="https://www.curseforge.com/minecraft/mc-mods/mtr-yomi-utility-mod" target="_blank" class="btn btn-outline">
-                    <i class="fab fa-uncharted"></i>CurseForge 下载（不推荐）
-                </a>
-            </div>
-            
-            <div class="qq-group">
-                <h3><i class="fab fa-qq"></i> 加入QQ群获取最新内测版！</h3>
-                <p>与开发者和其他玩家交流，获取最新测试版本和独家内容！</p>
-                <div class="qq-code">712460389</div>
-                <p>扫描二维码（暂无）或搜索群号加入！</p>
-            </div>
-        </div>
-    </section>
-
+    <!-- 底部区域 -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <h3 style="color: white; margin-bottom: 20px; font-weight: 500;">Yomi的MTR实用拓展</h3>
-                <p style="font-weight: 300;">MTR3的全新附属模组！</p>
-                
-                <div class="footer-links">
-                    <a href="https://github.com/yomi-china/MTR-Yomi-Utility-Mod" class="footer-link" target="_blank">
-                        <i class="fab fa-github"></i> GitHub
-                    </a>
-                    <a href="https://modrinth.com/mod/mtr-yum" class="footer-link" target="_blank">
-                        <i class="fas fa-cube"></i> Modrinth
-                    </a>
-                    <a href="https://www.curseforge.com/minecraft/mc-mods/mtr-yomi-utility-mod" class="footer-link" target="_blank">
-                        <i class="fab fa-discord"></i> CurseForge
-                    </a>
-                    <a href="https://www.mtrbbs.top/thread-7933-1-1.html" class="footer-link" target="_blank">
-                        <i class="fas fa-users"></i> MTRBBS帖子
-                    </a>
-                </div>
-                
-                <p style="margin-top: 30px; opacity: 0.7; font-weight: 300;">2026 Yomi_307</p>
+        <div class="footer-top">
+            中国
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-links">
+                <a href="#">关于</a>
+                <a href="#">广告</a>
+                <a href="#">商务</a>
+                <a href="#">隐私</a>
+            </div>
+            <div class="footer-links">
+                <a href="#">条款</a>
+                <a href="#">设置</a>
+                <a href="#">帮助</a>
             </div>
         </div>
     </footer>
-    
+
     <script>
-        // 平滑滚动效果
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+        // 获取DOM元素
+        const searchBox = document.querySelector('.search-box');
+        const searchBtn = document.getElementById('searchBtn');
+        const luckyBtn = document.getElementById('luckyBtn');
+
+        // 搜索函数
+        function search() {
+            const query = searchBox.value.trim();
+            if (query) {
+                // 跳转到必应搜索结果页
+                window.location.href = `https://cn.bing.com/search?q=${encodeURIComponent(query)}`;
+            } else {
+                // 提示输入内容
+                alert('请输入搜索内容！');
+            }
+        }
+
+        // 绑定搜索按钮点击事件
+        searchBtn.addEventListener('click', search);
+
+        // 绑定"运气不错"按钮点击事件（跳转到第一个搜索结果）
+        luckyBtn.addEventListener('click', () => {
+            const query = searchBox.value.trim();
+            if (query) {
+                window.location.href = `https://cn.bing.com/search?q=${encodeURIComponent(query)}&go=1&qs=ds&form=QBRE`;
+            } else {
+                alert('请输入搜索内容！');
+            }
         });
-        
-        // 卡片悬停效果增强
-        const cards = document.querySelectorAll('.card, .feature-item, .screenshot-container');
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-8px) scale(1.02)';
-                card.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) scale(1)';
-                card.style.boxShadow = '';
-            });
-        });
-        
-        // 动态更新年份
-        document.addEventListener('DOMContentLoaded', function() {
-            const yearElement = document.querySelector('footer p');
-            if (yearElement && yearElement.textContent.includes('2024')) {
-                const currentYear = new Date().getFullYear();
-                yearElement.textContent = yearElement.textContent.replace('2024', currentYear);
+
+        // 绑定回车键搜索
+        searchBox.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                search();
             }
         });
     </script>
